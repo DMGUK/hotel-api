@@ -17,6 +17,7 @@ public class RoomsController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<object>>> GetAll()
     {
         var rooms = await _db.Rooms
@@ -35,6 +36,8 @@ public class RoomsController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<object>> GetById(int id)
     {
         var room = await _db.Rooms

@@ -8,7 +8,7 @@ obj/
 *.suo
 
 #Database & Migrations
-*.db
+*.db*
 Migrations/
 
 # NuGet

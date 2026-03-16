@@ -1,11 +1,8 @@
 namespace HotelApi.Dto;
 using System.ComponentModel.DataAnnotations;
 
-public class CreateReservationDto
+public class UpdateReservationDto
 {
-    [Required]
-    public int RoomId { get; set; }
-
     [Required]
     [MaxLength(100)]
     public string GuestName { get; set; } = string.Empty;
