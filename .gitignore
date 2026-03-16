@@ -7,6 +7,10 @@ obj/
 *.user
 *.suo
 
+#Database & Migrations
+*.db
+Migrations/
+
 # NuGet
 packages/
 *.nuget.props
@@ -16,7 +20,3 @@ packages/
 appsettings.Development.json
 appsettings.Local.json
 secrets.json
-
-# OS
-.DS_Store
-Thumbs.db
