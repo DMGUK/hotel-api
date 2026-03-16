@@ -86,11 +86,13 @@ public class ReservationsController : ControllerBase
         if (room == null)
             return NotFound(new { message = $"Room with id {dto.RoomId} not found." });
 
-        bool alreadyReserved = await _db.Reservations
-            .AnyAsync(r => r.RoomId == dto.RoomId);
+        bool hasOverlap = await _db.Reservations
+            .AnyAsync(r => r.RoomId == dto.RoomId &&
+                        r.CheckIn < dto.CheckOut &&
+                        r.CheckOut > dto.CheckIn);
 
-        if (alreadyReserved)
-            return Conflict(new { message = $"Room {room.RoomNumber} is already reserved." });
+        if (hasOverlap)
+            return Conflict(new { message = $"Room {room.RoomNumber} is already reserved for the selected dates." });
 
         if (dto.CheckOut <= dto.CheckIn)
             return BadRequest(new { message = "Check-out must be after check-in." });
@@ -127,8 +129,18 @@ public class ReservationsController : ControllerBase
     {
         var reservation = await _db.Reservations.FindAsync(id);
 
+
         if (reservation == null)
             return NotFound(new { message = $"Reservation with id {id} not found." });
+
+        bool hasOverlap = await _db.Reservations
+            .AnyAsync(r => r.RoomId == reservation.RoomId &&
+                        r.Id != id &&
+                        r.CheckIn < dto.CheckOut &&
+                        r.CheckOut > dto.CheckIn);
+
+        if (hasOverlap)
+            return Conflict(new { message = "Room is already reserved for the selected dates." });
 
         if (dto.CheckOut <= dto.CheckIn)
             return BadRequest(new { message = "Check-out must be after check-in." });

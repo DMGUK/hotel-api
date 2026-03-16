@@ -7,5 +7,5 @@ public class Room
     public string Type { get; set; } = string.Empty;
     public decimal PricePerNight { get; set; }
 
-    public Reservation? Reservation { get; set; }
+    public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 }

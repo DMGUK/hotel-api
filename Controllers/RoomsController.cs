@@ -20,15 +20,18 @@ public class RoomsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<object>>> GetAll()
     {
+        var now = DateTime.UtcNow;
+
         var rooms = await _db.Rooms
-            .Include(r => r.Reservation)
+            .Include(r => r.Reservations)
             .Select(r => new
             {
                 r.Id,
                 r.RoomNumber,
                 r.Type,
                 r.PricePerNight,
-                IsAvailable = r.Reservation == null
+                IsAvailable = !r.Reservations.Any(res =>
+                    res.CheckIn <= now && res.CheckOut >= now)
             })
             .ToListAsync();
 
@@ -40,8 +43,10 @@ public class RoomsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<object>> GetById(int id)
     {
+        var now = DateTime.UtcNow;
+
         var room = await _db.Rooms
-            .Include(r => r.Reservation)
+            .Include(r => r.Reservations)
             .Where(r => r.Id == id)
             .Select(r => new
             {
@@ -49,15 +54,16 @@ public class RoomsController : ControllerBase
                 r.RoomNumber,
                 r.Type,
                 r.PricePerNight,
-                IsAvailable = r.Reservation == null,
-                CurrentReservation = r.Reservation == null ? null : new
+                IsAvailable = !r.Reservations.Any(res =>
+                    res.CheckIn <= now && res.CheckOut >= now),
+                Reservations = r.Reservations.Select(res => new
                 {
-                    r.Reservation.Id,
-                    r.Reservation.GuestName,
-                    r.Reservation.GuestEmail,
-                    r.Reservation.CheckIn,
-                    r.Reservation.CheckOut
-                }
+                    res.Id,
+                    res.GuestName,
+                    res.GuestEmail,
+                    res.CheckIn,
+                    res.CheckOut
+                })
             })
             .FirstOrDefaultAsync();
 

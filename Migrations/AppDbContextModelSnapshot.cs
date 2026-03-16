@@ -42,8 +42,7 @@ namespace HotelApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoomId")
-                        .IsUnique();
+                    b.HasIndex("RoomId");
 
                     b.ToTable("Reservations");
                 });
@@ -80,7 +79,7 @@ namespace HotelApi.Migrations
                         new
                         {
                             Id = 2,
-                            PricePerNight = 80m,
+                            PricePerNight = 90m,
                             RoomNumber = "102",
                             Type = "Single"
                         },
@@ -88,21 +87,56 @@ namespace HotelApi.Migrations
                         {
                             Id = 3,
                             PricePerNight = 120m,
-                            RoomNumber = "201",
+                            RoomNumber = "103",
                             Type = "Double"
                         },
                         new
                         {
                             Id = 4,
-                            PricePerNight = 120m,
-                            RoomNumber = "202",
+                            PricePerNight = 70m,
+                            RoomNumber = "201",
                             Type = "Double"
                         },
                         new
                         {
                             Id = 5,
-                            PricePerNight = 250m,
+                            PricePerNight = 150m,
+                            RoomNumber = "202",
+                            Type = "Suite"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            PricePerNight = 95m,
+                            RoomNumber = "203",
+                            Type = "Single"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            PricePerNight = 100m,
                             RoomNumber = "301",
+                            Type = "Single"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            PricePerNight = 110m,
+                            RoomNumber = "302",
+                            Type = "Double"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            PricePerNight = 140m,
+                            RoomNumber = "303",
+                            Type = "Double"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            PricePerNight = 250m,
+                            RoomNumber = "310",
                             Type = "Suite"
                         });
                 });
@@ -110,8 +144,8 @@ namespace HotelApi.Migrations
             modelBuilder.Entity("HotelApi.Models.Reservation", b =>
                 {
                     b.HasOne("HotelApi.Models.Room", "Room")
-                        .WithOne("Reservation")
-                        .HasForeignKey("HotelApi.Models.Reservation", "RoomId")
+                        .WithMany("Reservations")
+                        .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -120,7 +154,7 @@ namespace HotelApi.Migrations
 
             modelBuilder.Entity("HotelApi.Models.Room", b =>
                 {
-                    b.Navigation("Reservation");
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

@@ -57,17 +57,21 @@ namespace HotelApi.Migrations
                 values: new object[,]
                 {
                     { 1, 80m, "101", "Single" },
-                    { 2, 80m, "102", "Single" },
-                    { 3, 120m, "201", "Double" },
-                    { 4, 120m, "202", "Double" },
-                    { 5, 250m, "301", "Suite" }
+                    { 2, 90m, "102", "Single" },
+                    { 3, 120m, "103", "Double" },
+                    { 4, 70m, "201", "Double" },
+                    { 5, 150m, "202", "Suite" },
+                    { 6, 95m, "203", "Single" },
+                    { 7, 100m, "301", "Single" },
+                    { 8, 110m, "302", "Double" },
+                    { 9, 140m, "303", "Double" },
+                    { 10, 250m, "310", "Suite" }
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reservations_RoomId",
                 table: "Reservations",
-                column: "RoomId",
-                unique: true);
+                column: "RoomId");
         }
 
         /// <inheritdoc />
